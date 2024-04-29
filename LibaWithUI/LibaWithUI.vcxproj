@@ -118,11 +118,15 @@
     <ClInclude Include="BookRepository.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="ClientRepository.h" />
+    <ClInclude Include="Exceptions.h" />
     <ClInclude Include="execSql.h" />
     <ClInclude Include="fromFile.h" />
     <ClInclude Include="Genre.h" />
     <ClInclude Include="GenreRepository.h" />
     <ClInclude Include="GetDb.h" />
+    <ClInclude Include="MyForm.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="BookInsert.sql" />
@@ -136,11 +140,13 @@
     <ClCompile Include="BookLoanRepository.cpp" />
     <ClCompile Include="BookRepository.cpp" />
     <ClCompile Include="ClientRepository.cpp" />
+    <ClCompile Include="Exceptions.cpp" />
     <ClCompile Include="execSql.cpp" />
     <ClCompile Include="fromFile.cpp" />
     <ClCompile Include="GenreRepository.cpp" />
     <ClCompile Include="GetDb.cpp" />
     <ClCompile Include="Library.cpp" />
+    <ClCompile Include="MyForm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -148,6 +154,11 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MyForm.resx">
+      <DependentUpon>MyForm.h</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

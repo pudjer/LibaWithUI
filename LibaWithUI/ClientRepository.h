@@ -22,6 +22,7 @@ namespace Repositories {
 	};
 
 	class ClientNotFound : runtime_error {
+	public:
 		ClientNotFound(string);
 	};
 }

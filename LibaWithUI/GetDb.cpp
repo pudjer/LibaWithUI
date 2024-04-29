@@ -3,8 +3,7 @@
 
 namespace DB {
 
-    ConnectionError::ConnectionError(const char* msg) : exception(msg) {}
-    ConnectionError::ConnectionError() : exception() {}
+    ConnectionError::ConnectionError(string msg) : runtime_error(msg) {}
     sqlite3* getDb() {
         sqlite3* db;
         vector<string> paths{

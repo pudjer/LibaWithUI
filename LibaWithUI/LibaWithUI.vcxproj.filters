@@ -27,6 +27,9 @@
     <Filter Include="Исходные файлы\Model">
       <UniqueIdentifier>{3dd93165-0a4a-47ff-b8f6-1d64faa3a106}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\UI">
+      <UniqueIdentifier>{5c3b0dee-4606-4032-84c1-13b3c833c802}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Book.h">
@@ -62,6 +65,10 @@
     <ClInclude Include="BookLoanRepository.h">
       <Filter>Исходные файлы\Infrastructure\Repositories</Filter>
     </ClInclude>
+    <ClInclude Include="MyForm.h">
+      <Filter>Исходные файлы\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Exceptions.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="book_genre.sql">
@@ -107,6 +114,12 @@
     </ClCompile>
     <ClCompile Include="GetDb.cpp">
       <Filter>Исходные файлы\Infrastructure\Initialization</Filter>
+    </ClCompile>
+    <ClCompile Include="MyForm.cpp">
+      <Filter>Исходные файлы\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Exceptions.cpp">
+      <Filter>Исходные файлы\UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

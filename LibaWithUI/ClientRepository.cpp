@@ -31,6 +31,9 @@ namespace Repositories {
             sqlite3_finalize(stmt);
             return client;
         }
+        else {
+            throw ClientNotFound(to_string(id));
+        }
 
         // No client found with the given ID
         sqlite3_finalize(stmt);
@@ -39,24 +42,59 @@ namespace Repositories {
 
     void ClientRepository::saveClient(Client* client) {
         // Prepare SQL statement
-        const char* sql = "INSERT INTO Clients (passportNumber, lastName, firstName, middleName, address, dateOfBirth) VALUES (?, ?, ?, ?, ?, ?)";
-        sqlite3_stmt* stmt;
-        int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
-        if (rc != SQLITE_OK) {
-            sqlite3_finalize(stmt);
-            throw runtime_error(sqlite3_errmsg(db));
-        }
-        // Bind parameters
-        sqlite3_bind_text(stmt, 1, client->passportNumber.c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 2, client->lastName.c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 3, client->firstName.c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 4, client->middleName.c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 5, client->address.c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 6, client->dateOfBirth.c_str(), -1, SQLITE_STATIC);
+        if (client->id == 0) {
+            const char* sql = "INSERT INTO Clients (passportNumber, lastName, firstName, middleName, address, dateOfBirth) VALUES (?, ?, ?, ?, ?, ?) returning id;";
+            sqlite3_stmt* stmt;
+            int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+            if (rc != SQLITE_OK) {
+                sqlite3_finalize(stmt);
+                throw runtime_error(sqlite3_errmsg(db));
+            }
+            // Bind parameters
+            sqlite3_bind_text(stmt, 1, client->passportNumber.c_str(), -1, SQLITE_STATIC);
+            sqlite3_bind_text(stmt, 2, client->lastName.c_str(), -1, SQLITE_STATIC);
+            sqlite3_bind_text(stmt, 3, client->firstName.c_str(), -1, SQLITE_STATIC);
+            sqlite3_bind_text(stmt, 4, client->middleName.c_str(), -1, SQLITE_STATIC);
+            sqlite3_bind_text(stmt, 5, client->address.c_str(), -1, SQLITE_STATIC);
+            sqlite3_bind_text(stmt, 6, client->dateOfBirth.c_str(), -1, SQLITE_STATIC);
 
-        // Execute statement
-        sqlite3_step(stmt);
-        sqlite3_finalize(stmt);
+            // Execute statement
+            int result = sqlite3_step(stmt);
+            if (result != SQLITE_ROW) {
+                sqlite3_finalize(stmt);
+                throw runtime_error(sqlite3_errmsg(db));
+            }
+            client->id = sqlite3_column_int(stmt, 0);
+            sqlite3_finalize(stmt);
+        }
+        else {
+            getClientById(client->id);
+            const char* sql = "Update Clients set passportNumber = ?, lastName = ?, firstName = ?, middleName = ?, address = ?, dateOfBirth = ? where id = ?;";
+            sqlite3_stmt* stmt;
+            int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+            if (rc != SQLITE_OK) {
+                sqlite3_finalize(stmt);
+                throw runtime_error(sqlite3_errmsg(db));
+            }
+            // Bind parameters
+            sqlite3_bind_text(stmt, 1, client->passportNumber.c_str(), -1, SQLITE_STATIC);
+            sqlite3_bind_text(stmt, 2, client->lastName.c_str(), -1, SQLITE_STATIC);
+            sqlite3_bind_text(stmt, 3, client->firstName.c_str(), -1, SQLITE_STATIC);
+            sqlite3_bind_text(stmt, 4, client->middleName.c_str(), -1, SQLITE_STATIC);
+            sqlite3_bind_text(stmt, 5, client->address.c_str(), -1, SQLITE_STATIC);
+            sqlite3_bind_text(stmt, 6, client->dateOfBirth.c_str(), -1, SQLITE_STATIC);
+            sqlite3_bind_int(stmt, 7, client->id);
+
+
+            // Execute statement
+            auto res = sqlite3_step(stmt);
+            if (res != SQLITE_DONE) {
+                sqlite3_finalize(stmt);
+                throw runtime_error(sqlite3_errmsg(db));
+            }
+            sqlite3_finalize(stmt);
+        }
+
     }
 
     vector<Client> ClientRepository::getAllClients() {

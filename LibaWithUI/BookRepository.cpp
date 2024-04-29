@@ -121,32 +121,108 @@ namespace Repositories {
         sqlite3_finalize(dstm);
 
 
+
+        if (book->genres.size()) {
+            sqlite3_stmt* stmt;
+
+            GenreRepository genreRepo(db);
+
+            string insertQuery = "insert into book_genre values ";
+            char divider = ',';
+            size_t genresSize = book->genres.size();
+            for (int i = 0; i < genresSize; i++) {
+                Genre genre = book->genres[i];
+                Genre* genrePtr = &genre;
+                genreRepo.saveGenre(genrePtr);
+                if (i == genresSize - 1) {
+                    divider = ';';
+                }
+                insertQuery = insertQuery + "(" + to_string(book->id) + "," + '"' + genre.name + '"' + ")" + divider;
+            }
+            rc = sqlite3_prepare_v2(db, insertQuery.c_str(), -1, &stmt, NULL);
+            if (rc != SQLITE_OK) {
+                sqlite3_finalize(stmt);
+                throw runtime_error(sqlite3_errmsg(db));
+            }
+
+            result = sqlite3_step(stmt);
+            if (result != SQLITE_DONE) {
+                sqlite3_finalize(stmt);
+                throw runtime_error(sqlite3_errmsg(db));
+            }
+
+            sqlite3_finalize(stmt);
+        }
+        
+    }
+    vector<Book> BookRepository::getAllBooks() {
+        string bookQuery = "SELECT id, title, author, year, count, name, description FROM books "
+            "LEFT JOIN book_genre AS bg ON bg.book_id = books.id "
+            "LEFT JOIN genres ON bg.genre_name = genres.name;";
         sqlite3_stmt* stmt;
 
-        GenreRepository genreRepo(db);
+        vector<Book> books;
 
-        string insertQuery = "insert into book_genre values ";
-        char divider = ',';
-        size_t genresSize = book->genres.size();
-        for (int i = 0; i < genresSize; i++) {
-            Genre genre = book->genres[i];
-            Genre* genrePtr = &genre;
-            genreRepo.saveGenre(genrePtr);
-            if (i == genresSize - 1) {
-                divider = ';';
-            }
-            insertQuery = insertQuery + "(" + to_string(book->id) + "," + '"'+ genre.name + '"' + ")" + divider;
-        }
-        rc = sqlite3_prepare_v2(db, insertQuery.c_str(), -1, &stmt, NULL);
+        int rc = sqlite3_prepare_v2(db, bookQuery.c_str(), -1, &stmt, NULL);
         if (rc != SQLITE_OK) {
             sqlite3_finalize(stmt);
             throw runtime_error(sqlite3_errmsg(db));
         }
 
-        result = sqlite3_step(stmt);
-        if (result != SQLITE_DONE) {
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            int bookId = sqlite3_column_int(stmt, 0);
+            if (books.size() && (books.back().id == bookId)) {
+                if (sqlite3_column_text(stmt, 5)) {
+                    Genre genre{
+                        reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5)),
+                        reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6))
+                    };
+                    books.back().genres.push_back(genre);
+                }
+                continue;
+            }
+
+
+            Book book;
+            book.id = bookId;
+            book.title = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+            book.author = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+            book.year = sqlite3_column_int(stmt, 3);
+            book.count = sqlite3_column_int(stmt, 4);
+
+            if (sqlite3_column_text(stmt, 5)) {
+                Genre genre{
+                    reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5)),
+                    reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6))
+                };
+                book.genres.push_back(genre);
+            }
+            books.push_back(book);
+        }
+
+        sqlite3_finalize(stmt);
+        return books;
+    }
+    void BookRepository::deleteBook(int id) {
+        // Check if the book exists
+        getBookById(id);
+
+        // If the book exists, proceed with deletion
+        string deleteQuery = "DELETE FROM books WHERE id = ?;";
+        sqlite3_stmt* stmt;
+
+        int rc = sqlite3_prepare_v2(db, deleteQuery.c_str(), -1, &stmt, NULL);
+        if (rc != SQLITE_OK) {
             sqlite3_finalize(stmt);
             throw runtime_error(sqlite3_errmsg(db));
+        }
+
+        sqlite3_bind_int(stmt, 1, id);
+
+        rc = sqlite3_step(stmt);
+        if (rc != SQLITE_DONE) {
+            sqlite3_finalize(stmt);
+            throw runtime_error("Failed to delete book.");
         }
 
         sqlite3_finalize(stmt);

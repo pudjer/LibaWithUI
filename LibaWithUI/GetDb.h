@@ -8,10 +8,9 @@ using namespace std;
 
 
 namespace DB {
-    class ConnectionError : public exception {
+    class ConnectionError : public runtime_error {
     public:
-        ConnectionError(const char* msg);
-        ConnectionError();
+        ConnectionError(string);
     };
     sqlite3* getDb();
 }

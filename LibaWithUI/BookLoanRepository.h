@@ -3,6 +3,9 @@
 #include "BookLoan.h"
 #include <iostream>
 #include <vector>
+#include "BookRepository.h"
+#include "ClientRepository.h"
+
 
 using namespace std;
 using namespace Model;
@@ -16,17 +19,16 @@ namespace Repositories {
 	public:
 		BookLoanRepository(sqlite3* dataBase);
 		BookLoan getBookLoanById(int id);
-		void saveBookLoan(const BookLoan* bookLoan);
+		void saveBookLoan(BookLoan* bookLoan);
 		vector<BookLoan> getAllBookLoans(bool openOnly);
 		void deleteBookLoan(int id);
 		vector<BookLoan> getBookLoansByBook(int bookId, bool openOnly);
 		vector<BookLoan> getBookLoansByClient(int clientId, bool openOnly);
 
 	};
-	class BookLoanNotFound : exception {
+	class BookLoanNotFound : runtime_error {
 	public:
-		BookLoanNotFound();
-		BookLoanNotFound(char*);
+		BookLoanNotFound(string);
 	};
 }
 
