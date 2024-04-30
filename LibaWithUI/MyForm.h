@@ -722,30 +722,38 @@ protected:
 			// 
 			// BookCount
 			// 
+			this->BookCount->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
 			this->BookCount->Location = System::Drawing::Point(278, 491);
 			this->BookCount->Name = L"BookCount";
-			this->BookCount->Size = System::Drawing::Size(162, 20);
+			this->BookCount->Size = System::Drawing::Size(162, 29);
 			this->BookCount->TabIndex = 11;
 			// 
 			// BookYear
 			// 
+			this->BookYear->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
 			this->BookYear->Location = System::Drawing::Point(278, 409);
 			this->BookYear->Name = L"BookYear";
-			this->BookYear->Size = System::Drawing::Size(292, 20);
+			this->BookYear->Size = System::Drawing::Size(292, 29);
 			this->BookYear->TabIndex = 10;
 			// 
 			// BookAuthor
 			// 
+			this->BookAuthor->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
 			this->BookAuthor->Location = System::Drawing::Point(278, 330);
 			this->BookAuthor->Name = L"BookAuthor";
-			this->BookAuthor->Size = System::Drawing::Size(292, 20);
+			this->BookAuthor->Size = System::Drawing::Size(292, 29);
 			this->BookAuthor->TabIndex = 9;
 			// 
 			// BookTitle
 			// 
+			this->BookTitle->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
 			this->BookTitle->Location = System::Drawing::Point(275, 242);
 			this->BookTitle->Name = L"BookTitle";
-			this->BookTitle->Size = System::Drawing::Size(296, 20);
+			this->BookTitle->Size = System::Drawing::Size(296, 29);
 			this->BookTitle->TabIndex = 8;
 			// 
 			// BookIdLable
@@ -1462,11 +1470,11 @@ protected:
 			this->BackColor = System::Drawing::SystemColors::ControlDarkDark;
 			this->ClientSize = System::Drawing::Size(945, 880);
 			this->Controls->Add(this->NavigationBar);
-			this->Controls->Add(this->BookLoanPanel);
-			this->Controls->Add(this->ClientPanel);
 			this->Controls->Add(this->BookPanel);
 			this->Controls->Add(this->GenrePanel);
 			this->Controls->Add(this->AddGenrePanel);
+			this->Controls->Add(this->BookLoanPanel);
+			this->Controls->Add(this->ClientPanel);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
