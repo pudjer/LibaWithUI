@@ -31,6 +31,7 @@ namespace LibaWithUI {
 		BookRepository* bookRepo;
 		GenreRepository* genreRepo;
 		ClientRepository* clientRepo;
+		bool isMembersForBookLoanPicking = false;
 	private: System::Windows::Forms::Panel^ GenrePanel;
 	private: System::Windows::Forms::Button^ AddGenre;
 	private: System::Windows::Forms::Button^ RefreshGenres;
@@ -92,7 +93,7 @@ namespace LibaWithUI {
 
 	private: System::Windows::Forms::Button^ AddClientButton;
 
-	private: System::Windows::Forms::Label^ label17;
+
 	private: System::Windows::Forms::ListBox^ ClientList;
 
 	private: System::Windows::Forms::Label^ ClientIdLable;
@@ -102,6 +103,50 @@ namespace LibaWithUI {
 	private: System::Windows::Forms::TextBox^ AddressTextBox;
 	private: System::Windows::Forms::Label^ label18;
 	private: System::Windows::Forms::Label^ label19;
+	private: System::Windows::Forms::Label^ label20;
+	private: System::Windows::Forms::TextBox^ BookSearch;
+	private: System::Windows::Forms::TextBox^ GenreSearch;
+	private: System::Windows::Forms::Label^ label17;
+	private: System::Windows::Forms::Label^ label21;
+	private: System::Windows::Forms::TextBox^ ClientSearch;
+	private: System::Windows::Forms::Button^ BookLoanMenuButton;
+	private: System::Windows::Forms::Panel^ BookLoanPanel;
+	private: System::Windows::Forms::ListBox^ BookLoansListBox;
+	private: System::Windows::Forms::Button^ RefreshBookLoansButton;
+	private: System::Windows::Forms::CheckBox^ OpenBookLoansOnly;
+	private: System::Windows::Forms::Button^ SelectBook;
+	private: System::Windows::Forms::Button^ SelectClient;
+	private: System::Windows::Forms::DateTimePicker^ DateOfReturn;
+
+
+	private: System::Windows::Forms::Button^ CreateBookLoanButton;
+	private: System::Windows::Forms::Label^ BookIdBLLable;
+	private: System::Windows::Forms::Label^ ClientIdBLLable;
+	private: System::Windows::Forms::GroupBox^ CreatingGroup;
+
+	private: System::Windows::Forms::Button^ EndSelectClient;
+	private: System::Windows::Forms::Button^ EndSelectBook;
+
+	private: System::Windows::Forms::Button^ ReturnFromBook;
+	private: System::Windows::Forms::Button^ ReturnFromClient;
+private: System::Windows::Forms::Label^ TitleBLLable;
+private: System::Windows::Forms::Label^ label26;
+private: System::Windows::Forms::Label^ label25;
+private: System::Windows::Forms::Label^ FioLable;
+private: System::Windows::Forms::Label^ label23;
+private: System::Windows::Forms::Label^ label22;
+private: System::Windows::Forms::Label^ BookLoanIdLabel;
+private: System::Windows::Forms::Label^ label27;
+private: System::Windows::Forms::Label^ label24;
+private: System::Windows::Forms::Button^ CloseBLButton;
+private: System::Windows::Forms::Button^ AddBLButton;
+
+
+
+
+
+
+
 
 
 
@@ -137,7 +182,9 @@ namespace LibaWithUI {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
+private: System::Windows::Forms::FlowLayoutPanel^ NavigationBar;
+protected:
+
 	private: System::Windows::Forms::Button^ GenresMenuButton;
 	private:
 		/// <summary>
@@ -152,11 +199,14 @@ namespace LibaWithUI {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->flowLayoutPanel1 = (gcnew System::Windows::Forms::FlowLayoutPanel());
+			this->NavigationBar = (gcnew System::Windows::Forms::FlowLayoutPanel());
 			this->GenresMenuButton = (gcnew System::Windows::Forms::Button());
 			this->BookMenuButton = (gcnew System::Windows::Forms::Button());
 			this->ClientsMenuButton = (gcnew System::Windows::Forms::Button());
+			this->BookLoanMenuButton = (gcnew System::Windows::Forms::Button());
 			this->GenrePanel = (gcnew System::Windows::Forms::Panel());
+			this->label17 = (gcnew System::Windows::Forms::Label());
+			this->GenreSearch = (gcnew System::Windows::Forms::TextBox());
 			this->DeleteGenreButton = (gcnew System::Windows::Forms::Button());
 			this->UpdateGenreButton = (gcnew System::Windows::Forms::Button());
 			this->AddGenre = (gcnew System::Windows::Forms::Button());
@@ -173,6 +223,11 @@ namespace LibaWithUI {
 			this->GenreDescriptionForSave = (gcnew System::Windows::Forms::TextBox());
 			this->GenreNameForSave = (gcnew System::Windows::Forms::TextBox());
 			this->BookPanel = (gcnew System::Windows::Forms::Panel());
+			this->ReturnFromBook = (gcnew System::Windows::Forms::Button());
+			this->EndSelectBook = (gcnew System::Windows::Forms::Button());
+			this->label20 = (gcnew System::Windows::Forms::Label());
+			this->BookSearch = (gcnew System::Windows::Forms::TextBox());
+			this->label19 = (gcnew System::Windows::Forms::Label());
 			this->BooksGenreList = (gcnew System::Windows::Forms::CheckedListBox());
 			this->BookSaveTypeLable = (gcnew System::Windows::Forms::Label());
 			this->RefreshBooksButton = (gcnew System::Windows::Forms::Button());
@@ -192,6 +247,10 @@ namespace LibaWithUI {
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->BookList = (gcnew System::Windows::Forms::ListBox());
 			this->ClientPanel = (gcnew System::Windows::Forms::Panel());
+			this->ReturnFromClient = (gcnew System::Windows::Forms::Button());
+			this->EndSelectClient = (gcnew System::Windows::Forms::Button());
+			this->label21 = (gcnew System::Windows::Forms::Label());
+			this->ClientSearch = (gcnew System::Windows::Forms::TextBox());
 			this->label18 = (gcnew System::Windows::Forms::Label());
 			this->AddressTextBox = (gcnew System::Windows::Forms::TextBox());
 			this->ClientSaveType = (gcnew System::Windows::Forms::Label());
@@ -200,7 +259,6 @@ namespace LibaWithUI {
 			this->ClientIdLable = (gcnew System::Windows::Forms::Label());
 			this->DeleteClientButton = (gcnew System::Windows::Forms::Button());
 			this->AddClientButton = (gcnew System::Windows::Forms::Button());
-			this->label17 = (gcnew System::Windows::Forms::Label());
 			this->ClientList = (gcnew System::Windows::Forms::ListBox());
 			this->PassportNumberTextBox = (gcnew System::Windows::Forms::TextBox());
 			this->LastNameTextBox = (gcnew System::Windows::Forms::TextBox());
@@ -213,23 +271,47 @@ namespace LibaWithUI {
 			this->label13 = (gcnew System::Windows::Forms::Label());
 			this->label12 = (gcnew System::Windows::Forms::Label());
 			this->label11 = (gcnew System::Windows::Forms::Label());
-			this->label19 = (gcnew System::Windows::Forms::Label());
-			this->flowLayoutPanel1->SuspendLayout();
+			this->BookLoanPanel = (gcnew System::Windows::Forms::Panel());
+			this->AddBLButton = (gcnew System::Windows::Forms::Button());
+			this->CloseBLButton = (gcnew System::Windows::Forms::Button());
+			this->label24 = (gcnew System::Windows::Forms::Label());
+			this->BookLoanIdLabel = (gcnew System::Windows::Forms::Label());
+			this->label27 = (gcnew System::Windows::Forms::Label());
+			this->TitleBLLable = (gcnew System::Windows::Forms::Label());
+			this->label26 = (gcnew System::Windows::Forms::Label());
+			this->label25 = (gcnew System::Windows::Forms::Label());
+			this->FioLable = (gcnew System::Windows::Forms::Label());
+			this->label23 = (gcnew System::Windows::Forms::Label());
+			this->label22 = (gcnew System::Windows::Forms::Label());
+			this->CreatingGroup = (gcnew System::Windows::Forms::GroupBox());
+			this->SelectBook = (gcnew System::Windows::Forms::Button());
+			this->SelectClient = (gcnew System::Windows::Forms::Button());
+			this->CreateBookLoanButton = (gcnew System::Windows::Forms::Button());
+			this->BookIdBLLable = (gcnew System::Windows::Forms::Label());
+			this->ClientIdBLLable = (gcnew System::Windows::Forms::Label());
+			this->DateOfReturn = (gcnew System::Windows::Forms::DateTimePicker());
+			this->OpenBookLoansOnly = (gcnew System::Windows::Forms::CheckBox());
+			this->RefreshBookLoansButton = (gcnew System::Windows::Forms::Button());
+			this->BookLoansListBox = (gcnew System::Windows::Forms::ListBox());
+			this->NavigationBar->SuspendLayout();
 			this->GenrePanel->SuspendLayout();
 			this->AddGenrePanel->SuspendLayout();
 			this->BookPanel->SuspendLayout();
 			this->ClientPanel->SuspendLayout();
+			this->BookLoanPanel->SuspendLayout();
+			this->CreatingGroup->SuspendLayout();
 			this->SuspendLayout();
 			// 
-			// flowLayoutPanel1
+			// NavigationBar
 			// 
-			this->flowLayoutPanel1->Controls->Add(this->GenresMenuButton);
-			this->flowLayoutPanel1->Controls->Add(this->BookMenuButton);
-			this->flowLayoutPanel1->Controls->Add(this->ClientsMenuButton);
-			this->flowLayoutPanel1->Location = System::Drawing::Point(6, 3);
-			this->flowLayoutPanel1->Name = L"flowLayoutPanel1";
-			this->flowLayoutPanel1->Size = System::Drawing::Size(927, 75);
-			this->flowLayoutPanel1->TabIndex = 1;
+			this->NavigationBar->Controls->Add(this->GenresMenuButton);
+			this->NavigationBar->Controls->Add(this->BookMenuButton);
+			this->NavigationBar->Controls->Add(this->ClientsMenuButton);
+			this->NavigationBar->Controls->Add(this->BookLoanMenuButton);
+			this->NavigationBar->Location = System::Drawing::Point(6, 1);
+			this->NavigationBar->Name = L"NavigationBar";
+			this->NavigationBar->Size = System::Drawing::Size(927, 84);
+			this->NavigationBar->TabIndex = 1;
 			// 
 			// GenresMenuButton
 			// 
@@ -261,8 +343,20 @@ namespace LibaWithUI {
 			this->ClientsMenuButton->UseVisualStyleBackColor = true;
 			this->ClientsMenuButton->Click += gcnew System::EventHandler(this, &MyForm::ClientsMenuButton_Click);
 			// 
+			// BookLoanMenuButton
+			// 
+			this->BookLoanMenuButton->Location = System::Drawing::Point(663, 3);
+			this->BookLoanMenuButton->Name = L"BookLoanMenuButton";
+			this->BookLoanMenuButton->Size = System::Drawing::Size(245, 70);
+			this->BookLoanMenuButton->TabIndex = 3;
+			this->BookLoanMenuButton->Text = L"Выдача и возврат книг";
+			this->BookLoanMenuButton->UseVisualStyleBackColor = true;
+			this->BookLoanMenuButton->Click += gcnew System::EventHandler(this, &MyForm::BookLoanMenuButton_Click);
+			// 
 			// GenrePanel
 			// 
+			this->GenrePanel->Controls->Add(this->label17);
+			this->GenrePanel->Controls->Add(this->GenreSearch);
 			this->GenrePanel->Controls->Add(this->DeleteGenreButton);
 			this->GenrePanel->Controls->Add(this->UpdateGenreButton);
 			this->GenrePanel->Controls->Add(this->AddGenre);
@@ -278,6 +372,24 @@ namespace LibaWithUI {
 			this->GenrePanel->Name = L"GenrePanel";
 			this->GenrePanel->Size = System::Drawing::Size(843, 745);
 			this->GenrePanel->TabIndex = 2;
+			// 
+			// label17
+			// 
+			this->label17->AutoSize = true;
+			this->label17->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label17->Location = System::Drawing::Point(25, 79);
+			this->label17->Name = L"label17";
+			this->label17->Size = System::Drawing::Size(62, 24);
+			this->label17->TabIndex = 21;
+			this->label17->Text = L"поиск";
+			// 
+			// GenreSearch
+			// 
+			this->GenreSearch->Location = System::Drawing::Point(22, 112);
+			this->GenreSearch->Name = L"GenreSearch";
+			this->GenreSearch->Size = System::Drawing::Size(212, 24);
+			this->GenreSearch->TabIndex = 11;
 			// 
 			// DeleteGenreButton
 			// 
@@ -312,7 +424,7 @@ namespace LibaWithUI {
 			// 
 			// RefreshGenres
 			// 
-			this->RefreshGenres->Location = System::Drawing::Point(121, 140);
+			this->RefreshGenres->Location = System::Drawing::Point(70, 142);
 			this->RefreshGenres->Name = L"RefreshGenres";
 			this->RefreshGenres->Size = System::Drawing::Size(115, 27);
 			this->RefreshGenres->TabIndex = 7;
@@ -346,7 +458,7 @@ namespace LibaWithUI {
 			this->label1->AutoSize = true;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->label1->Location = System::Drawing::Point(13, 133);
+			this->label1->Location = System::Drawing::Point(738, 9);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(102, 31);
 			this->label1->TabIndex = 3;
@@ -368,7 +480,7 @@ namespace LibaWithUI {
 			this->SelectedGenre->AutoSize = true;
 			this->SelectedGenre->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 48, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->SelectedGenre->Location = System::Drawing::Point(49, 28);
+			this->SelectedGenre->Location = System::Drawing::Point(163, 11);
 			this->SelectedGenre->Name = L"SelectedGenre";
 			this->SelectedGenre->Size = System::Drawing::Size(501, 73);
 			this->SelectedGenre->TabIndex = 0;
@@ -437,6 +549,10 @@ namespace LibaWithUI {
 			// 
 			// BookPanel
 			// 
+			this->BookPanel->Controls->Add(this->ReturnFromBook);
+			this->BookPanel->Controls->Add(this->EndSelectBook);
+			this->BookPanel->Controls->Add(this->label20);
+			this->BookPanel->Controls->Add(this->BookSearch);
 			this->BookPanel->Controls->Add(this->label19);
 			this->BookPanel->Controls->Add(this->BooksGenreList);
 			this->BookPanel->Controls->Add(this->BookSaveTypeLable);
@@ -461,6 +577,61 @@ namespace LibaWithUI {
 			this->BookPanel->Size = System::Drawing::Size(865, 716);
 			this->BookPanel->TabIndex = 4;
 			// 
+			// ReturnFromBook
+			// 
+			this->ReturnFromBook->BackColor = System::Drawing::Color::Red;
+			this->ReturnFromBook->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->ReturnFromBook->Location = System::Drawing::Point(571, 656);
+			this->ReturnFromBook->Name = L"ReturnFromBook";
+			this->ReturnFromBook->Size = System::Drawing::Size(178, 52);
+			this->ReturnFromBook->TabIndex = 22;
+			this->ReturnFromBook->Text = L"Отмена";
+			this->ReturnFromBook->UseVisualStyleBackColor = false;
+			this->ReturnFromBook->Visible = false;
+			this->ReturnFromBook->Click += gcnew System::EventHandler(this, &MyForm::ReturnFromBook_Click);
+			// 
+			// EndSelectBook
+			// 
+			this->EndSelectBook->BackColor = System::Drawing::Color::Yellow;
+			this->EndSelectBook->Location = System::Drawing::Point(384, 656);
+			this->EndSelectBook->Name = L"EndSelectBook";
+			this->EndSelectBook->Size = System::Drawing::Size(186, 52);
+			this->EndSelectBook->TabIndex = 21;
+			this->EndSelectBook->Text = L"Выбрать книгу";
+			this->EndSelectBook->UseVisualStyleBackColor = false;
+			this->EndSelectBook->Visible = false;
+			this->EndSelectBook->Click += gcnew System::EventHandler(this, &MyForm::EndBookPicking_Click);
+			// 
+			// label20
+			// 
+			this->label20->AutoSize = true;
+			this->label20->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label20->Location = System::Drawing::Point(32, 48);
+			this->label20->Name = L"label20";
+			this->label20->Size = System::Drawing::Size(62, 24);
+			this->label20->TabIndex = 20;
+			this->label20->Text = L"поиск";
+			// 
+			// BookSearch
+			// 
+			this->BookSearch->Location = System::Drawing::Point(31, 75);
+			this->BookSearch->Name = L"BookSearch";
+			this->BookSearch->Size = System::Drawing::Size(178, 20);
+			this->BookSearch->TabIndex = 19;
+			// 
+			// label19
+			// 
+			this->label19->AutoSize = true;
+			this->label19->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label19->Location = System::Drawing::Point(666, 95);
+			this->label19->Name = L"label19";
+			this->label19->Size = System::Drawing::Size(143, 25);
+			this->label19->TabIndex = 18;
+			this->label19->Text = L"Жанры книги";
+			// 
 			// BooksGenreList
 			// 
 			this->BooksGenreList->CheckOnClick = true;
@@ -483,7 +654,7 @@ namespace LibaWithUI {
 			// 
 			// RefreshBooksButton
 			// 
-			this->RefreshBooksButton->Location = System::Drawing::Point(134, 95);
+			this->RefreshBooksButton->Location = System::Drawing::Point(78, 99);
 			this->RefreshBooksButton->Name = L"RefreshBooksButton";
 			this->RefreshBooksButton->Size = System::Drawing::Size(75, 23);
 			this->RefreshBooksButton->TabIndex = 15;
@@ -621,7 +792,7 @@ namespace LibaWithUI {
 			this->label5->AutoSize = true;
 			this->label5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->label5->Location = System::Drawing::Point(17, 60);
+			this->label5->Location = System::Drawing::Point(767, 0);
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(93, 33);
 			this->label5->TabIndex = 1;
@@ -638,6 +809,10 @@ namespace LibaWithUI {
 			// 
 			// ClientPanel
 			// 
+			this->ClientPanel->Controls->Add(this->ReturnFromClient);
+			this->ClientPanel->Controls->Add(this->EndSelectClient);
+			this->ClientPanel->Controls->Add(this->label21);
+			this->ClientPanel->Controls->Add(this->ClientSearch);
 			this->ClientPanel->Controls->Add(this->label18);
 			this->ClientPanel->Controls->Add(this->AddressTextBox);
 			this->ClientPanel->Controls->Add(this->ClientSaveType);
@@ -646,7 +821,6 @@ namespace LibaWithUI {
 			this->ClientPanel->Controls->Add(this->ClientIdLable);
 			this->ClientPanel->Controls->Add(this->DeleteClientButton);
 			this->ClientPanel->Controls->Add(this->AddClientButton);
-			this->ClientPanel->Controls->Add(this->label17);
 			this->ClientPanel->Controls->Add(this->ClientList);
 			this->ClientPanel->Controls->Add(this->PassportNumberTextBox);
 			this->ClientPanel->Controls->Add(this->LastNameTextBox);
@@ -659,10 +833,54 @@ namespace LibaWithUI {
 			this->ClientPanel->Controls->Add(this->label13);
 			this->ClientPanel->Controls->Add(this->label12);
 			this->ClientPanel->Controls->Add(this->label11);
-			this->ClientPanel->Location = System::Drawing::Point(48, 125);
+			this->ClientPanel->Location = System::Drawing::Point(48, 113);
 			this->ClientPanel->Name = L"ClientPanel";
-			this->ClientPanel->Size = System::Drawing::Size(847, 743);
+			this->ClientPanel->Size = System::Drawing::Size(847, 755);
 			this->ClientPanel->TabIndex = 5;
+			// 
+			// ReturnFromClient
+			// 
+			this->ReturnFromClient->BackColor = System::Drawing::Color::Red;
+			this->ReturnFromClient->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 24, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->ReturnFromClient->Location = System::Drawing::Point(586, 692);
+			this->ReturnFromClient->Name = L"ReturnFromClient";
+			this->ReturnFromClient->Size = System::Drawing::Size(206, 57);
+			this->ReturnFromClient->TabIndex = 25;
+			this->ReturnFromClient->Text = L"Отмена";
+			this->ReturnFromClient->UseVisualStyleBackColor = false;
+			this->ReturnFromClient->Visible = false;
+			this->ReturnFromClient->Click += gcnew System::EventHandler(this, &MyForm::ReturnFromClient_Click);
+			// 
+			// EndSelectClient
+			// 
+			this->EndSelectClient->BackColor = System::Drawing::Color::Yellow;
+			this->EndSelectClient->Location = System::Drawing::Point(390, 693);
+			this->EndSelectClient->Name = L"EndSelectClient";
+			this->EndSelectClient->Size = System::Drawing::Size(197, 56);
+			this->EndSelectClient->TabIndex = 24;
+			this->EndSelectClient->Text = L"Выбрать читателя";
+			this->EndSelectClient->UseVisualStyleBackColor = false;
+			this->EndSelectClient->Visible = false;
+			this->EndSelectClient->Click += gcnew System::EventHandler(this, &MyForm::EndSelectClient_Click);
+			// 
+			// label21
+			// 
+			this->label21->AutoSize = true;
+			this->label21->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label21->Location = System::Drawing::Point(67, 13);
+			this->label21->Name = L"label21";
+			this->label21->Size = System::Drawing::Size(62, 24);
+			this->label21->TabIndex = 23;
+			this->label21->Text = L"поиск";
+			// 
+			// ClientSearch
+			// 
+			this->ClientSearch->Location = System::Drawing::Point(55, 46);
+			this->ClientSearch->Name = L"ClientSearch";
+			this->ClientSearch->Size = System::Drawing::Size(218, 20);
+			this->ClientSearch->TabIndex = 22;
 			// 
 			// label18
 			// 
@@ -697,7 +915,7 @@ namespace LibaWithUI {
 			// 
 			// RefreshClientsButton
 			// 
-			this->RefreshClientsButton->Location = System::Drawing::Point(232, 33);
+			this->RefreshClientsButton->Location = System::Drawing::Point(126, 77);
 			this->RefreshClientsButton->Name = L"RefreshClientsButton";
 			this->RefreshClientsButton->Size = System::Drawing::Size(74, 22);
 			this->RefreshClientsButton->TabIndex = 18;
@@ -709,7 +927,7 @@ namespace LibaWithUI {
 			// 
 			this->SaveClientButton->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
-			this->SaveClientButton->Location = System::Drawing::Point(508, 697);
+			this->SaveClientButton->Location = System::Drawing::Point(626, 110);
 			this->SaveClientButton->Name = L"SaveClientButton";
 			this->SaveClientButton->Size = System::Drawing::Size(133, 45);
 			this->SaveClientButton->TabIndex = 17;
@@ -731,7 +949,7 @@ namespace LibaWithUI {
 			// DeleteClientButton
 			// 
 			this->DeleteClientButton->BackColor = System::Drawing::Color::Red;
-			this->DeleteClientButton->Location = System::Drawing::Point(179, 646);
+			this->DeleteClientButton->Location = System::Drawing::Point(164, 677);
 			this->DeleteClientButton->Name = L"DeleteClientButton";
 			this->DeleteClientButton->Size = System::Drawing::Size(132, 33);
 			this->DeleteClientButton->TabIndex = 15;
@@ -741,7 +959,7 @@ namespace LibaWithUI {
 			// 
 			// AddClientButton
 			// 
-			this->AddClientButton->Location = System::Drawing::Point(55, 646);
+			this->AddClientButton->Location = System::Drawing::Point(40, 677);
 			this->AddClientButton->Name = L"AddClientButton";
 			this->AddClientButton->Size = System::Drawing::Size(125, 34);
 			this->AddClientButton->TabIndex = 14;
@@ -749,21 +967,10 @@ namespace LibaWithUI {
 			this->AddClientButton->UseVisualStyleBackColor = true;
 			this->AddClientButton->Click += gcnew System::EventHandler(this, &MyForm::AddClientButton_Click);
 			// 
-			// label17
-			// 
-			this->label17->AutoSize = true;
-			this->label17->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->label17->Location = System::Drawing::Point(55, 23);
-			this->label17->Name = L"label17";
-			this->label17->Size = System::Drawing::Size(142, 33);
-			this->label17->TabIndex = 13;
-			this->label17->Text = L"Читатели";
-			// 
 			// ClientList
 			// 
 			this->ClientList->FormattingEnabled = true;
-			this->ClientList->Location = System::Drawing::Point(55, 71);
+			this->ClientList->Location = System::Drawing::Point(40, 102);
 			this->ClientList->Name = L"ClientList";
 			this->ClientList->Size = System::Drawing::Size(252, 576);
 			this->ClientList->TabIndex = 12;
@@ -880,16 +1087,255 @@ namespace LibaWithUI {
 			this->label11->TabIndex = 0;
 			this->label11->Text = L"Номер читательского билета";
 			// 
-			// label19
+			// BookLoanPanel
 			// 
-			this->label19->AutoSize = true;
-			this->label19->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->BookLoanPanel->Controls->Add(this->AddBLButton);
+			this->BookLoanPanel->Controls->Add(this->CloseBLButton);
+			this->BookLoanPanel->Controls->Add(this->label24);
+			this->BookLoanPanel->Controls->Add(this->BookLoanIdLabel);
+			this->BookLoanPanel->Controls->Add(this->label27);
+			this->BookLoanPanel->Controls->Add(this->TitleBLLable);
+			this->BookLoanPanel->Controls->Add(this->label26);
+			this->BookLoanPanel->Controls->Add(this->label25);
+			this->BookLoanPanel->Controls->Add(this->FioLable);
+			this->BookLoanPanel->Controls->Add(this->label23);
+			this->BookLoanPanel->Controls->Add(this->label22);
+			this->BookLoanPanel->Controls->Add(this->CreatingGroup);
+			this->BookLoanPanel->Controls->Add(this->BookIdBLLable);
+			this->BookLoanPanel->Controls->Add(this->ClientIdBLLable);
+			this->BookLoanPanel->Controls->Add(this->DateOfReturn);
+			this->BookLoanPanel->Controls->Add(this->OpenBookLoansOnly);
+			this->BookLoanPanel->Controls->Add(this->RefreshBookLoansButton);
+			this->BookLoanPanel->Controls->Add(this->BookLoansListBox);
+			this->BookLoanPanel->Location = System::Drawing::Point(39, 107);
+			this->BookLoanPanel->Name = L"BookLoanPanel";
+			this->BookLoanPanel->Size = System::Drawing::Size(874, 760);
+			this->BookLoanPanel->TabIndex = 6;
+			// 
+			// AddBLButton
+			// 
+			this->AddBLButton->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(192)),
+				static_cast<System::Int32>(static_cast<System::Byte>(0)));
+			this->AddBLButton->Location = System::Drawing::Point(204, 626);
+			this->AddBLButton->Name = L"AddBLButton";
+			this->AddBLButton->Size = System::Drawing::Size(130, 36);
+			this->AddBLButton->TabIndex = 20;
+			this->AddBLButton->Text = L"Добавить";
+			this->AddBLButton->UseVisualStyleBackColor = false;
+			this->AddBLButton->Click += gcnew System::EventHandler(this, &MyForm::AddBLButton_Click);
+			// 
+			// CloseBLButton
+			// 
+			this->CloseBLButton->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(192)),
+				static_cast<System::Int32>(static_cast<System::Byte>(0)));
+			this->CloseBLButton->Location = System::Drawing::Point(534, 578);
+			this->CloseBLButton->Name = L"CloseBLButton";
+			this->CloseBLButton->Size = System::Drawing::Size(182, 45);
+			this->CloseBLButton->TabIndex = 6;
+			this->CloseBLButton->Text = L"Вернуть";
+			this->CloseBLButton->UseVisualStyleBackColor = false;
+			this->CloseBLButton->Visible = false;
+			this->CloseBLButton->Click += gcnew System::EventHandler(this, &MyForm::CloseBLButton_Click);
+			// 
+			// label24
+			// 
+			this->label24->AutoSize = true;
+			this->label24->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->label19->Location = System::Drawing::Point(666, 95);
-			this->label19->Name = L"label19";
-			this->label19->Size = System::Drawing::Size(143, 25);
-			this->label19->TabIndex = 18;
-			this->label19->Text = L"Жанры книги";
+			this->label24->Location = System::Drawing::Point(418, 435);
+			this->label24->Name = L"label24";
+			this->label24->Size = System::Drawing::Size(212, 33);
+			this->label24->TabIndex = 19;
+			this->label24->Text = L"Дата возврата";
+			// 
+			// BookLoanIdLabel
+			// 
+			this->BookLoanIdLabel->AutoSize = true;
+			this->BookLoanIdLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->BookLoanIdLabel->Location = System::Drawing::Point(419, 46);
+			this->BookLoanIdLabel->Name = L"BookLoanIdLabel";
+			this->BookLoanIdLabel->Size = System::Drawing::Size(0, 25);
+			this->BookLoanIdLabel->TabIndex = 18;
+			// 
+			// label27
+			// 
+			this->label27->AutoSize = true;
+			this->label27->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label27->Location = System::Drawing::Point(410, 6);
+			this->label27->Name = L"label27";
+			this->label27->Size = System::Drawing::Size(213, 33);
+			this->label27->TabIndex = 17;
+			this->label27->Text = L"Номер выдачи";
+			// 
+			// TitleBLLable
+			// 
+			this->TitleBLLable->AutoSize = true;
+			this->TitleBLLable->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->TitleBLLable->Location = System::Drawing::Point(417, 392);
+			this->TitleBLLable->Name = L"TitleBLLable";
+			this->TitleBLLable->Size = System::Drawing::Size(0, 33);
+			this->TitleBLLable->TabIndex = 15;
+			// 
+			// label26
+			// 
+			this->label26->AutoSize = true;
+			this->label26->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label26->Location = System::Drawing::Point(417, 359);
+			this->label26->Name = L"label26";
+			this->label26->Size = System::Drawing::Size(228, 33);
+			this->label26->TabIndex = 14;
+			this->label26->Text = L"Название книги";
+			// 
+			// label25
+			// 
+			this->label25->AutoSize = true;
+			this->label25->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label25->Location = System::Drawing::Point(417, 271);
+			this->label25->Name = L"label25";
+			this->label25->Size = System::Drawing::Size(187, 33);
+			this->label25->TabIndex = 13;
+			this->label25->Text = L"Номер книги";
+			// 
+			// FioLable
+			// 
+			this->FioLable->AutoSize = true;
+			this->FioLable->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->FioLable->Location = System::Drawing::Point(415, 224);
+			this->FioLable->Name = L"FioLable";
+			this->FioLable->Size = System::Drawing::Size(0, 33);
+			this->FioLable->TabIndex = 12;
+			// 
+			// label23
+			// 
+			this->label23->AutoSize = true;
+			this->label23->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label23->Location = System::Drawing::Point(412, 189);
+			this->label23->Name = L"label23";
+			this->label23->Size = System::Drawing::Size(84, 33);
+			this->label23->TabIndex = 11;
+			this->label23->Text = L"ФИО";
+			// 
+			// label22
+			// 
+			this->label22->AutoSize = true;
+			this->label22->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->label22->Location = System::Drawing::Point(410, 98);
+			this->label22->Name = L"label22";
+			this->label22->Size = System::Drawing::Size(410, 33);
+			this->label22->TabIndex = 10;
+			this->label22->Text = L"Номер читательского билета";
+			// 
+			// CreatingGroup
+			// 
+			this->CreatingGroup->Controls->Add(this->SelectBook);
+			this->CreatingGroup->Controls->Add(this->SelectClient);
+			this->CreatingGroup->Controls->Add(this->CreateBookLoanButton);
+			this->CreatingGroup->Location = System::Drawing::Point(396, 551);
+			this->CreatingGroup->Name = L"CreatingGroup";
+			this->CreatingGroup->Size = System::Drawing::Size(432, 135);
+			this->CreatingGroup->TabIndex = 9;
+			this->CreatingGroup->TabStop = false;
+			this->CreatingGroup->Text = L"groupBox1";
+			// 
+			// SelectBook
+			// 
+			this->SelectBook->BackColor = System::Drawing::Color::Yellow;
+			this->SelectBook->Location = System::Drawing::Point(6, 9);
+			this->SelectBook->Name = L"SelectBook";
+			this->SelectBook->Size = System::Drawing::Size(197, 55);
+			this->SelectBook->TabIndex = 3;
+			this->SelectBook->Text = L"Выбрать книгу";
+			this->SelectBook->UseVisualStyleBackColor = false;
+			this->SelectBook->Click += gcnew System::EventHandler(this, &MyForm::SelectClient_Click);
+			// 
+			// SelectClient
+			// 
+			this->SelectClient->BackColor = System::Drawing::Color::Yellow;
+			this->SelectClient->Location = System::Drawing::Point(229, 9);
+			this->SelectClient->Name = L"SelectClient";
+			this->SelectClient->Size = System::Drawing::Size(197, 55);
+			this->SelectClient->TabIndex = 4;
+			this->SelectClient->Text = L"Выбрать читателя";
+			this->SelectClient->UseVisualStyleBackColor = false;
+			this->SelectClient->Click += gcnew System::EventHandler(this, &MyForm::SelectBook_Click);
+			// 
+			// CreateBookLoanButton
+			// 
+			this->CreateBookLoanButton->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(0)),
+				static_cast<System::Int32>(static_cast<System::Byte>(192)), static_cast<System::Int32>(static_cast<System::Byte>(0)));
+			this->CreateBookLoanButton->Location = System::Drawing::Point(126, 84);
+			this->CreateBookLoanButton->Name = L"CreateBookLoanButton";
+			this->CreateBookLoanButton->Size = System::Drawing::Size(182, 45);
+			this->CreateBookLoanButton->TabIndex = 5;
+			this->CreateBookLoanButton->Text = L"Выдать";
+			this->CreateBookLoanButton->UseVisualStyleBackColor = false;
+			this->CreateBookLoanButton->Click += gcnew System::EventHandler(this, &MyForm::CreateBookLoanButton_Click);
+			// 
+			// BookIdBLLable
+			// 
+			this->BookIdBLLable->AutoSize = true;
+			this->BookIdBLLable->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->BookIdBLLable->Location = System::Drawing::Point(417, 304);
+			this->BookIdBLLable->Name = L"BookIdBLLable";
+			this->BookIdBLLable->Size = System::Drawing::Size(0, 33);
+			this->BookIdBLLable->TabIndex = 8;
+			// 
+			// ClientIdBLLable
+			// 
+			this->ClientIdBLLable->AutoSize = true;
+			this->ClientIdBLLable->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
+			this->ClientIdBLLable->Location = System::Drawing::Point(415, 135);
+			this->ClientIdBLLable->Name = L"ClientIdBLLable";
+			this->ClientIdBLLable->Size = System::Drawing::Size(0, 33);
+			this->ClientIdBLLable->TabIndex = 7;
+			// 
+			// DateOfReturn
+			// 
+			this->DateOfReturn->Location = System::Drawing::Point(424, 471);
+			this->DateOfReturn->Name = L"DateOfReturn";
+			this->DateOfReturn->Size = System::Drawing::Size(200, 20);
+			this->DateOfReturn->TabIndex = 6;
+			this->DateOfReturn->Value = System::DateTime(2024, 4, 4, 0, 0, 0, 0);
+			// 
+			// OpenBookLoansOnly
+			// 
+			this->OpenBookLoansOnly->AutoSize = true;
+			this->OpenBookLoansOnly->Location = System::Drawing::Point(3, 82);
+			this->OpenBookLoansOnly->Name = L"OpenBookLoansOnly";
+			this->OpenBookLoansOnly->Size = System::Drawing::Size(135, 17);
+			this->OpenBookLoansOnly->TabIndex = 2;
+			this->OpenBookLoansOnly->Text = L"Только действующие";
+			this->OpenBookLoansOnly->UseVisualStyleBackColor = true;
+			this->OpenBookLoansOnly->CheckedChanged += gcnew System::EventHandler(this, &MyForm::OpenBookLoansOnly_CheckedChanged);
+			// 
+			// RefreshBookLoansButton
+			// 
+			this->RefreshBookLoansButton->Location = System::Drawing::Point(19, 589);
+			this->RefreshBookLoansButton->Name = L"RefreshBookLoansButton";
+			this->RefreshBookLoansButton->Size = System::Drawing::Size(94, 31);
+			this->RefreshBookLoansButton->TabIndex = 1;
+			this->RefreshBookLoansButton->Text = L"Обновить";
+			this->RefreshBookLoansButton->UseVisualStyleBackColor = true;
+			this->RefreshBookLoansButton->Click += gcnew System::EventHandler(this, &MyForm::RefreshBookLoansButton_Click);
+			// 
+			// BookLoansListBox
+			// 
+			this->BookLoansListBox->FormattingEnabled = true;
+			this->BookLoansListBox->Location = System::Drawing::Point(135, 83);
+			this->BookLoansListBox->Name = L"BookLoansListBox";
+			this->BookLoansListBox->Size = System::Drawing::Size(199, 537);
+			this->BookLoansListBox->TabIndex = 0;
+			this->BookLoansListBox->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm::BookLoansListBox_SelectedIndexChanged);
 			// 
 			// MyForm
 			// 
@@ -897,15 +1343,16 @@ namespace LibaWithUI {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ControlDarkDark;
 			this->ClientSize = System::Drawing::Size(945, 880);
-			this->Controls->Add(this->flowLayoutPanel1);
+			this->Controls->Add(this->NavigationBar);
+			this->Controls->Add(this->BookLoanPanel);
+			this->Controls->Add(this->ClientPanel);
 			this->Controls->Add(this->BookPanel);
 			this->Controls->Add(this->GenrePanel);
 			this->Controls->Add(this->AddGenrePanel);
-			this->Controls->Add(this->ClientPanel);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
-			this->flowLayoutPanel1->ResumeLayout(false);
+			this->NavigationBar->ResumeLayout(false);
 			this->GenrePanel->ResumeLayout(false);
 			this->GenrePanel->PerformLayout();
 			this->AddGenrePanel->ResumeLayout(false);
@@ -914,6 +1361,9 @@ namespace LibaWithUI {
 			this->BookPanel->PerformLayout();
 			this->ClientPanel->ResumeLayout(false);
 			this->ClientPanel->PerformLayout();
+			this->BookLoanPanel->ResumeLayout(false);
+			this->BookLoanPanel->PerformLayout();
+			this->CreatingGroup->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}
@@ -924,7 +1374,11 @@ private: System::Void hidePanels() {
 	this->AddGenrePanel->Visible = false;
 	this->BookPanel->Visible = false;
 	this->ClientPanel->Visible = false;
-
+	this->BookLoanPanel->Visible = false;
+}
+private: System::Void BookLoanMenuButton_Click(System::Object^ sender, System::EventArgs^ e) {
+	this->hidePanels();
+	this->BookLoanPanel->Visible = true;
 }
 private: System::Void GenresMenuButton_Click(System::Object^ sender, System::EventArgs^ e) {
 	this->hidePanels();
@@ -937,6 +1391,28 @@ private: System::Void BookMenuButton_Click(System::Object^ sender, System::Event
 private: System::Void ClientsMenuButton_Click(System::Object^ sender, System::EventArgs^ e) {
 	hidePanels();
 	this->ClientPanel->Visible = true;
+}
+private: void startPicking() {
+	hidePanels();
+	this->isMembersForBookLoanPicking = true;
+	this->NavigationBar->Visible = false;
+	this->EndSelectClient->Visible = true;
+	this->EndSelectBook->Visible = true;
+	this->ReturnFromBook->Visible = true;
+	this->ReturnFromClient->Visible = true;
+
+}
+private: void endPicking() {
+	hidePanels();
+	this->BookLoanPanel->Visible = true;
+	this->isMembersForBookLoanPicking = false;
+	this->NavigationBar->Visible = true;
+	this->EndSelectClient->Visible = false;
+	this->EndSelectBook->Visible = false;
+	this->ReturnFromBook->Visible = false;
+	this->ReturnFromClient->Visible = false;
+
+
 }
 
 //GenrePanel
@@ -967,8 +1443,19 @@ private: System::Void AddGenre_Click(System::Object^ sender, System::EventArgs^ 
 	this->AddGenrePanel->Visible = true;
 }
 private: System::Void RefreshGenres_Click(System::Object^ sender, System::EventArgs^ e) {
-	vector<Genre> genres = this->genreRepo->getAllGenres();
 	this->GenreList->Items->Clear();
+	vector<Genre> genres = this->genreRepo->getAllGenres();
+	string query = msclr::interop::marshal_as<std::string>(this->GenreSearch->Text);
+	if (query != "") {
+		vector<Genre> filtered;
+		for (auto genre : genres) {
+			string fullText = genre.name + genre.description;
+			if (fullText.find(query) != string::npos) {
+				filtered.push_back(genre);
+			}
+		}
+		genres = filtered;
+	}
 	for (auto genre : genres) {
 		auto str = gcnew String(genre.name.c_str());
 		this->GenreList->Items->Add(str);
@@ -1026,6 +1513,18 @@ private: System::Void GenreList_Leave(System::Object^ sender, System::EventArgs^
 //BooksPanel
 private: System::Void RefreshBooksButton_Click(System::Object^ sender, System::EventArgs^ e) {
 	vector<Book> books = this->bookRepo->getAllBooks();
+	string query = msclr::interop::marshal_as<std::string>(this->BookSearch->Text);
+	if (query != "") {
+		vector<Book> filtered;
+		for (auto book : books) {
+			string fullText = book.title + book.author + to_string(book.year);
+			if (fullText.find(query) != string::npos) {
+				filtered.push_back(book);
+			}
+		}
+		books = filtered;
+	}
+
 	this->BookList->Items->Clear();
 	for (Book book : books) {
 		auto str = gcnew String(("№ "+to_string(book.id)+": "+book.title).c_str());
@@ -1126,7 +1625,7 @@ private: void validateBookForm() {
 		throw runtime_error("Please enter a valid year.");
 	}
 	try {
-		stoi(msclr::interop::marshal_as<std::string>(this->BookCount->Text));
+		stoul(msclr::interop::marshal_as<std::string>(this->BookCount->Text));
 	}
 	catch (...) {
 		throw runtime_error("Please enter a valid count.");
@@ -1151,7 +1650,7 @@ private: System::Void SaveBookButton_Click(System::Object^ sender, System::Event
 		book.title = msclr::interop::marshal_as<std::string>(this->BookTitle->Text);
 		book.author = msclr::interop::marshal_as<std::string>(this->BookAuthor->Text);
 		book.year = stoi(msclr::interop::marshal_as<std::string>(this->BookYear->Text));
-		book.count = stoi(msclr::interop::marshal_as<std::string>(this->BookCount->Text));
+		book.count = stoul(msclr::interop::marshal_as<std::string>(this->BookCount->Text));
 		string idString = msclr::interop::marshal_as<std::string>(this->BookIdLable->Text);
 		cout << idString;
 		if (idString == string("")) {
@@ -1183,6 +1682,18 @@ private: System::Void RefreshClientsButton_Click(System::Object^ sender, System:
 {
 	this->ClientList->Items->Clear();
 	auto clients = this->clientRepo->getAllClients();
+	string query = msclr::interop::marshal_as<std::string>(this->ClientSearch->Text);
+	if (query != "") {
+		vector<Client> filtered;
+		for (auto client : clients) {
+			string fullText = client.firstName + client.lastName +client.passportNumber + client.middleName + client.dateOfBirth + client.address;
+			if (fullText.find(query) != string::npos) {
+				filtered.push_back(client);
+			}
+		}
+		clients = filtered;
+	}
+
 	for (auto client : clients) {
 		string clientString = to_string(client.id) + " " + client.lastName + " " + client.firstName + " " + client.middleName;
 		this->ClientList->Items->Add(gcnew String(clientString.c_str()));
@@ -1315,10 +1826,157 @@ private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) 
 	RefreshBooksButton_Click(sender, e);
 	RefreshClientsButton_Click(sender, e);
 	RefreshGenres_Click(sender, e);
+	RefreshBookLoansButton_Click(sender, e);
+
+}
+
+private: System::Void RefreshBookLoansButton_Click(System::Object^ sender, System::EventArgs^ e) {
+	this->BookLoansListBox->Items->Clear();
+	vector<BookLoan> bookLoans;
+	if (this->OpenBookLoansOnly->Checked) {
+		bookLoans = this->bookLoanRepo->getAllBookLoans(true);
+	}
+	else {
+		bookLoans = this->bookLoanRepo->getAllBookLoans(false);
+	}
+	for (auto bookLoan : bookLoans) {
+		string bookLoanString = to_string(bookLoan.id) + " Читатель №: " + to_string(bookLoan.client.id) + " Книга №: " + to_string(bookLoan.book.id);
+		this->BookLoansListBox->Items->Add(gcnew String(bookLoanString.c_str()));
+	}
+
+}
+
+
+private: System::Void SelectBook_Click(System::Object^ sender, System::EventArgs^ e) {
+	startPicking();
+	this->ClientPanel->Visible = true;
+}
+private: System::Void SelectClient_Click(System::Object^ sender, System::EventArgs^ e) {
+	startPicking();
+	this->BookPanel->Visible = true;
+}
+private: System::Void ReturnFromBook_Click(System::Object^ sender, System::EventArgs^ e) {
+	endPicking();
+}
+private: System::Void ReturnFromClient_Click(System::Object^ sender, System::EventArgs^ e) {
+	endPicking();
+}
+
+
+
+private: System::Void EndSelectClient_Click(System::Object^ sender, System::EventArgs^ e) {
+	try {
+		int id = getSelectedClient();
+
+		Client client = this->clientRepo->getClientById(id);
+
+
+		this->ClientIdBLLable->Text = gcnew String(to_string(client.id).c_str());
+		this->FioLable->Text = gcnew String((client.firstName+' '+client.lastName + ' ' + client.middleName).c_str());
+
+		endPicking();
+	}
+	catch (NotSelected& er) {
+		MessageBox::Show(gcnew String("select client!!"));
+	}
+}
+private: System::Void EndBookPicking_Click(System::Object^ sender, System::EventArgs^ e) {
+	try {
+		int id = getSelectedBook();
+		Book book = this->bookRepo->getBookById(id);
+		this->BookIdBLLable->Text = gcnew String(to_string(book.id).c_str());
+		this->TitleBLLable->Text = gcnew String(book.title.c_str());
+
+		endPicking();
+	}
+	catch (NotSelected& er) {
+		MessageBox::Show(gcnew String("select book!!"));
+	}
+}
+
+
+private: System::Void CreateBookLoanButton_Click(System::Object^ sender, System::EventArgs^ e) {
+	try {
+		auto clientIdStr = this->ClientIdBLLable->Text;
+		auto bookIdStr = this->BookIdBLLable->Text;
+		if ((clientIdStr == "") || (bookIdStr == "")) {
+			throw runtime_error("select memebers!!");
+		}
+		int clientId = stoi(msclr::interop::marshal_as<std::string>(clientIdStr));
+		int bookId = stoi(msclr::interop::marshal_as<std::string>(bookIdStr));
+		string dateOfReturnWithTime = msclr::interop::marshal_as<std::string>(this->DateOfReturn->Value.ToString());
+		size_t pos = dateOfReturnWithTime.find(' ');
+		string dateOfReturn = dateOfReturnWithTime.substr(0, pos);
+		Book book = this->bookRepo->getBookById(bookId);
+		Client client = this->clientRepo->getClientById(clientId);
+		BookLoan bookLoan(dateOfReturn, book, client);
+		this->bookLoanRepo->createBookLoan(&bookLoan);
+		RefreshBookLoansButton_Click(sender, e);
+	}
+	catch (exception& e) {
+		MessageBox::Show(gcnew String(e.what()));
+	}
+}
+
+
+
+private: System::Void BookLoansListBox_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
+	int index = this->BookLoansListBox->SelectedIndex;
+	if (index == -1) {
+		throw NotSelected("book loan");
+	}
+	auto a = this->BookLoansListBox->Items[index]->ToString();
+	string selected = msclr::interop::marshal_as<std::string>(a);
+	size_t pos = selected.find(' '); // Find the position of the colon
+	std::string idString = selected.substr(0, pos); // Extract the substring containing the id
+	int id = stoi(idString);
+	BookLoan bl = this->bookLoanRepo->getBookLoanById(id);
+	
+	this->CreatingGroup->Visible = false;
+	this->DateOfReturn->Enabled = false;
+
+	this->BookIdBLLable->Text = gcnew String(to_string(bl.book.id).c_str());
+	this->BookLoanIdLabel->Text = gcnew String(to_string(bl.id).c_str());
+	this->ClientIdBLLable->Text = gcnew String(to_string(bl.client.id).c_str());
+	this->FioLable->Text = gcnew String((bl.client.lastName+ ' '+ bl.client.firstName + ' ' + bl.client.middleName).c_str());
+	this->TitleBLLable->Text = gcnew String(bl.book.title.c_str());
+	if (!bl.canceled) {
+		this->CloseBLButton->Visible = true;
+	}
+	auto dateString = gcnew String(bl.dateOfReturn.c_str());
+	DateTime date;
+	// Parse the string to get the DateTime object
+	if (DateTime::TryParseExact(dateString, "dd.MM.yyyy", System::Globalization::CultureInfo::InvariantCulture, System::Globalization::DateTimeStyles::None, date)) {
+		// Set the value of the DateTimePicker to the parsed date
+		this->DateOfReturn->Value = date;
+	}
+	else {
+		// Handle parsing error
+		MessageBox::Show("Invalid date format");
+	}
+
+}
+private: System::Void AddBLButton_Click(System::Object^ sender, System::EventArgs^ e) {
+	this->CreatingGroup->Visible = true;
+	this->DateOfReturn->Enabled = true;
+	this->BookIdBLLable->Text = "";
+	this->BookLoanIdLabel->Text = "";
+	this->ClientIdBLLable->Text = "";
+	this->FioLable->Text = "";
+	this->TitleBLLable->Text = "";
+	this->DateOfReturn->Value = System::DateTime::Now;
+	this->CloseBLButton->Visible = false;
+}
+private: System::Void CloseBLButton_Click(System::Object^ sender, System::EventArgs^ e) {
+	int id = stoi(msclr::interop::marshal_as<std::string>(this->BookLoanIdLabel->Text));
+	this->bookLoanRepo->closeBookLoan(id);
+	AddBLButton_Click(sender, e);
+	RefreshBookLoansButton_Click(sender, e);
+}
+private: System::Void OpenBookLoansOnly_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	RefreshBookLoansButton_Click(sender, e);
 }
 };
-
-
 }
 
 

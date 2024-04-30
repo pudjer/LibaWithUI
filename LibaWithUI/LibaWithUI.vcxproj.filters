@@ -69,6 +69,9 @@
       <Filter>Исходные файлы\UI</Filter>
     </ClInclude>
     <ClInclude Include="Exceptions.h" />
+    <ClInclude Include="ConvertToDate.h">
+      <Filter>Исходные файлы\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="book_genre.sql">
@@ -120,6 +123,12 @@
     </ClCompile>
     <ClCompile Include="Exceptions.cpp">
       <Filter>Исходные файлы\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="BookLoan.cpp">
+      <Filter>Исходные файлы\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvertToDate.cpp">
+      <Filter>Исходные файлы\Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

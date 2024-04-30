@@ -8,14 +8,14 @@ namespace Repositories {
 
 
 	BookLoan BookLoanRepository::getBookLoanById(int id) {
-        std::string sql = "SELECT (id, dateOfIssue, dateOfReturn, book_id, client_id, canceled) FROM book_loans WHERE id = ?;";
+        std::string sql = "SELECT id, dateOfIssue, dateOfReturn, book_id, client_id, canceled FROM book_loans WHERE id = ?;";
         sqlite3_stmt* stmt;
         int result = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
         if (result != SQLITE_OK) {
             throw std::runtime_error("Failed to prepare SQL statement.");
         }
 
-        result = sqlite3_bind_int(stmt, 1, id);
+        sqlite3_bind_int(stmt, 1, id);
 
         result = sqlite3_step(stmt);
         if (result == SQLITE_ROW) {
@@ -46,22 +46,17 @@ namespace Repositories {
         }
 	}
 
-    void BookLoanRepository::saveBookLoan(BookLoan* bookLoan) {
+    void BookLoanRepository::createBookLoan(BookLoan* bookLoan) {
+        if (bookLoan->book.count < 1) {
+            throw NotEnoughBook("not enought books for loan");
+        }
+        bookLoan->book.count = bookLoan->book.count - 1;
         BookRepository bookRepo(db);
         ClientRepository clientRepo(db);
         bookRepo.saveBook(&bookLoan->book);
         clientRepo.saveClient(&bookLoan->client);
         std::string sql;
-        bool isInsert = false;
-        if (bookLoan->id == 0) {
-            // Insert a new book loan
-            sql = "INSERT INTO book_loans (dateOfIssue, dateOfReturn, book_id, client_id, canceled) VALUES (?, ?, ?, ?, ?) returning id;;";
-            isInsert = true;
-        }
-        else {
-            // Update an existing book loan
-            sql = "UPDATE book_loans SET dateOfIssue = ?, dateOfReturn = ?, book_id = ?, client_id = ?, canceled = ? WHERE id = ?;";
-        }
+        sql = "INSERT INTO book_loans (dateOfIssue, dateOfReturn, book_id, client_id, canceled) VALUES (?, ?, ?, ?, ?) returning id;";
 
         sqlite3_stmt* stmt;
         int result = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
@@ -76,27 +71,87 @@ namespace Repositories {
         result = sqlite3_bind_int(stmt, 3, bookLoan->book.id);
         result = sqlite3_bind_int(stmt, 4, bookLoan->client.id);
         result = sqlite3_bind_int(stmt, 5, bookLoan->canceled);
-        if (!isInsert) {
-            result = sqlite3_bind_int(stmt, 6, bookLoan->id);
-        }
 
         // Execute the SQL statement
         result = sqlite3_step(stmt);
 
 
-        if (isInsert) {
-            if (result != SQLITE_ROW) {
-                sqlite3_finalize(stmt);
-                throw runtime_error(sqlite3_errmsg(db));
-            }
-            bookLoan->id = sqlite3_column_int(stmt, 0);
+        if (result != SQLITE_ROW) {
+            sqlite3_finalize(stmt);
+            throw runtime_error(sqlite3_errmsg(db));
         }
-        else {
-            if (result != SQLITE_DONE) {
-                sqlite3_finalize(stmt);
-                throw std::runtime_error("Failed to save book loan.");
-            }
-        }
+        bookLoan->id = sqlite3_column_int(stmt, 0);
         sqlite3_finalize(stmt);
     }
+    void BookLoanRepository::closeBookLoan(int id) {
+        std::string sql = "UPDATE book_loans SET canceled = 1 WHERE id = ?;";
+
+        sqlite3_stmt* stmt;
+        int result = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
+        if (result != SQLITE_OK) {
+            throw std::runtime_error("Failed to prepare SQL statement.");
+        }
+
+        // Bind parameter
+        result = sqlite3_bind_int(stmt, 1, id);
+
+        // Execute the SQL statement
+        result = sqlite3_step(stmt);
+
+        if (result != SQLITE_DONE) {
+            sqlite3_finalize(stmt);
+            throw std::runtime_error("Failed to close book loan.");
+        }
+
+        sqlite3_finalize(stmt);
+
+        // Increment book count
+        BookLoan bookLoan = getBookLoanById(id); // Assuming you have a method to retrieve book loan by id
+        BookRepository bookRepo(db);
+        Book book = bookLoan.book;
+        book.count++;
+        bookRepo.saveBook(&book);
+    }
+
+    vector<BookLoan> BookLoanRepository::getAllBookLoans(bool openOnly) {
+        vector<BookLoan> allBookLoans;
+        std::string sql;
+        if (openOnly) {
+            sql = "SELECT id, dateOfIssue, dateOfReturn, book_id, client_id, canceled FROM book_loans WHERE canceled = 0;";
+        }
+        else {
+            sql = "SELECT id, dateOfIssue, dateOfReturn, book_id, client_id, canceled FROM book_loans;";
+        }
+
+        sqlite3_stmt* stmt;
+        int result = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
+        if (result != SQLITE_OK) {
+            throw std::runtime_error("Failed to prepare SQL statement.");
+        }
+
+        // Execute the SQL statement
+        ClientRepository clientRepo(db);
+        BookRepository bookRepo(db);
+        while ((result = sqlite3_step(stmt)) == SQLITE_ROW) {
+            BookLoan bookLoan;
+            bookLoan.id = sqlite3_column_int(stmt, 0);
+            bookLoan.dateOfIssue = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
+            bookLoan.dateOfReturn = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));
+            bookLoan.book = bookRepo.getBookById(sqlite3_column_int(stmt, 3));
+            bookLoan.client = clientRepo.getClientById(sqlite3_column_int(stmt, 4));
+            bookLoan.canceled = sqlite3_column_int(stmt, 5) != 0;
+
+            allBookLoans.push_back(bookLoan);
+        }
+
+        if (result != SQLITE_DONE) {
+            sqlite3_finalize(stmt);
+            throw std::runtime_error("Failed to retrieve book loans.");
+        }
+
+        sqlite3_finalize(stmt);
+        return allBookLoans;
+    }
+
+    NotEnoughBook::NotEnoughBook(string msg) :runtime_error(msg) {};
 }

@@ -118,6 +118,7 @@
     <ClInclude Include="BookRepository.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="ClientRepository.h" />
+    <ClInclude Include="ConvertToDate.h" />
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="execSql.h" />
     <ClInclude Include="fromFile.h" />
@@ -137,9 +138,11 @@
     <None Include="genres.sql" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BookLoan.cpp" />
     <ClCompile Include="BookLoanRepository.cpp" />
     <ClCompile Include="BookRepository.cpp" />
     <ClCompile Include="ClientRepository.cpp" />
+    <ClCompile Include="ConvertToDate.cpp" />
     <ClCompile Include="Exceptions.cpp" />
     <ClCompile Include="execSql.cpp" />
     <ClCompile Include="fromFile.cpp" />

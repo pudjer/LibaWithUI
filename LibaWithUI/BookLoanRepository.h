@@ -19,16 +19,18 @@ namespace Repositories {
 	public:
 		BookLoanRepository(sqlite3* dataBase);
 		BookLoan getBookLoanById(int id);
-		void saveBookLoan(BookLoan* bookLoan);
-		vector<BookLoan> getAllBookLoans(bool openOnly);
-		void deleteBookLoan(int id);
-		vector<BookLoan> getBookLoansByBook(int bookId, bool openOnly);
-		vector<BookLoan> getBookLoansByClient(int clientId, bool openOnly);
+		void createBookLoan(BookLoan* bookLoan);
+		vector<BookLoan> getAllBookLoans(bool openOnly = false);
+		void closeBookLoan(int id);
 
 	};
 	class BookLoanNotFound : runtime_error {
 	public:
 		BookLoanNotFound(string);
+	};
+	class NotEnoughBook : runtime_error {
+	public:
+		NotEnoughBook(string);
 	};
 }
 

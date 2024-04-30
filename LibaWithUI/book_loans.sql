@@ -5,6 +5,6 @@ CREATE TABLE IF NOT EXISTS book_loans (
     book_id INTEGER NOT NULL,
     client_id INTEGER NOT NULL,
     canceled INTEGER NOT NULL,
-    FOREIGN KEY (book_id) REFERENCES books(id),
-    FOREIGN KEY (client_id) REFERENCES clients(id)
+    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE,
+    FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
 );

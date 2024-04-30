@@ -8,7 +8,7 @@ namespace Model {
         std::string title;
         std::string author;
         int year;
-        int count;
+        unsigned int count;
         std::vector<Genre> genres;
         int id = 0;
     };
