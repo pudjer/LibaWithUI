@@ -213,6 +213,7 @@ protected:
 			this->ClientsMenuButton = (gcnew System::Windows::Forms::Button());
 			this->BookLoanMenuButton = (gcnew System::Windows::Forms::Button());
 			this->GenrePanel = (gcnew System::Windows::Forms::Panel());
+			this->GenreDescription = (gcnew System::Windows::Forms::TextBox());
 			this->label17 = (gcnew System::Windows::Forms::Label());
 			this->GenreSearch = (gcnew System::Windows::Forms::TextBox());
 			this->DeleteGenreButton = (gcnew System::Windows::Forms::Button());
@@ -305,7 +306,6 @@ protected:
 			this->OpenBookLoansOnly = (gcnew System::Windows::Forms::CheckBox());
 			this->RefreshBookLoansButton = (gcnew System::Windows::Forms::Button());
 			this->BookLoansListBox = (gcnew System::Windows::Forms::ListBox());
-			this->GenreDescription = (gcnew System::Windows::Forms::TextBox());
 			this->NavigationBar->SuspendLayout();
 			this->GenrePanel->SuspendLayout();
 			this->AddGenrePanel->SuspendLayout();
@@ -393,6 +393,17 @@ protected:
 			this->GenrePanel->Name = L"GenrePanel";
 			this->GenrePanel->Size = System::Drawing::Size(843, 745);
 			this->GenrePanel->TabIndex = 2;
+			// 
+			// GenreDescription
+			// 
+			this->GenreDescription->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(204)));
+			this->GenreDescription->Location = System::Drawing::Point(348, 178);
+			this->GenreDescription->Multiline = true;
+			this->GenreDescription->Name = L"GenreDescription";
+			this->GenreDescription->ReadOnly = true;
+			this->GenreDescription->Size = System::Drawing::Size(450, 475);
+			this->GenreDescription->TabIndex = 22;
 			// 
 			// label17
 			// 
@@ -1451,17 +1462,6 @@ protected:
 			this->BookLoansListBox->Size = System::Drawing::Size(323, 532);
 			this->BookLoansListBox->TabIndex = 0;
 			this->BookLoansListBox->SelectedIndexChanged += gcnew System::EventHandler(this, &MyForm::BookLoansListBox_SelectedIndexChanged);
-			// 
-			// GenreDescription
-			// 
-			this->GenreDescription->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 18, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->GenreDescription->Location = System::Drawing::Point(348, 178);
-			this->GenreDescription->Multiline = true;
-			this->GenreDescription->Name = L"GenreDescription";
-			this->GenreDescription->ReadOnly = true;
-			this->GenreDescription->Size = System::Drawing::Size(450, 475);
-			this->GenreDescription->TabIndex = 22;
 			// 
 			// MyForm
 			// 
