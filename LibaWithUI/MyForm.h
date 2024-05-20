@@ -599,7 +599,7 @@ protected:
 			this->BookPanel->Controls->Add(this->BookList);
 			this->BookPanel->Location = System::Drawing::Point(58, 110);
 			this->BookPanel->Name = L"BookPanel";
-			this->BookPanel->Size = System::Drawing::Size(865, 716);
+			this->BookPanel->Size = System::Drawing::Size(865, 754);
 			this->BookPanel->TabIndex = 4;
 			// 
 			// ReturnFromBook
