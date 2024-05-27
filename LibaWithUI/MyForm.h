@@ -169,9 +169,7 @@ private: System::Windows::Forms::TextBox^ GenreDescription;
 		MyForm(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: добавьте код конструктора
-			//
+			//инициируем репозитории
 			db = DB::getDb();
 			bookRepo = new BookRepository(db);
 			genreRepo = new GenreRepository(db);
@@ -599,7 +597,7 @@ protected:
 			this->BookPanel->Controls->Add(this->BookList);
 			this->BookPanel->Location = System::Drawing::Point(58, 110);
 			this->BookPanel->Name = L"BookPanel";
-			this->BookPanel->Size = System::Drawing::Size(865, 716);
+			this->BookPanel->Size = System::Drawing::Size(865, 752);
 			this->BookPanel->TabIndex = 4;
 			// 
 			// ReturnFromBook
@@ -1494,7 +1492,7 @@ protected:
 
 		}
 #pragma endregion
-//navigation
+//скрываем все панели
 private: System::Void hidePanels() {
 	this->GenrePanel->Visible = false;
 	this->AddGenrePanel->Visible = false;
@@ -1502,6 +1500,7 @@ private: System::Void hidePanels() {
 	this->ClientPanel->Visible = false;
 	this->BookLoanPanel->Visible = false;
 }
+//после скрытия панелей делаем видимой нужную //
 private: System::Void BookLoanMenuButton_Click(System::Object^ sender, System::EventArgs^ e) {
 	this->hidePanels();
 	this->BookLoanPanel->Visible = true;
@@ -1518,6 +1517,10 @@ private: System::Void ClientsMenuButton_Click(System::Object^ sender, System::Ev
 	hidePanels();
 	this->ClientPanel->Visible = true;
 }
+//
+
+
+//делаем видимыми элементы для выбора нужной книги и клиента
 private: void startPicking() {
 	hidePanels();
 	this->isMembersForBookLoanPicking = true;
@@ -1528,6 +1531,7 @@ private: void startPicking() {
 	this->ReturnFromClient->Visible = true;
 
 }
+//скрываем элементы для выбора книги и клиента
 private: void endPicking() {
 	hidePanels();
 	this->BookLoanPanel->Visible = true;
@@ -1541,7 +1545,7 @@ private: void endPicking() {
 
 }
 
-//GenrePanel
+//Получить выбранный жанр
 private: string getSelectedGenre() {
 	int index = this->GenreList->SelectedIndex;
 	if (index == -1) {
@@ -1550,6 +1554,8 @@ private: string getSelectedGenre() {
 	auto a = this->GenreList->Items[index];
 	return msclr::interop::marshal_as<std::string>(a->ToString());
 }
+
+//выводим информацию о выбранном элементе
 private: System::Void GenreList_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
 	try {
 		string selected = getSelectedGenre();
@@ -1564,10 +1570,12 @@ private: System::Void GenreList_SelectedIndexChanged(System::Object^ sender, Sys
 	}
 
 }
+//делаем видимым окно добавления жанра
 private: System::Void AddGenre_Click(System::Object^ sender, System::EventArgs^ e) {
 	this->hidePanels();
 	this->AddGenrePanel->Visible = true;
 }
+//обновляем жанры из базы данных
 private: System::Void RefreshGenres_Click(System::Object^ sender, System::EventArgs^ e) {
 	this->GenreList->Items->Clear();
 	this->refreshBookGenres();
@@ -1625,6 +1633,9 @@ private: System::Void DeleteGenreButton_Click(System::Object^ sender, System::Ev
 	try {
 		string selected = getSelectedGenre();
 		this->genreRepo->deleteGenre(selected.c_str());
+		try {
+			refreshBookGenres();
+		}catch(...){}
 		this->RefreshGenres_Click(sender, e);
 	}catch (NotSelected& e) {
 		MessageBox::Show("Select Genre!!");
@@ -1657,6 +1668,7 @@ private: System::Void RefreshBooksButton_Click(System::Object^ sender, System::E
 		auto str = gcnew String(("№ "+to_string(book.id)+": "+book.title).c_str());
 		this->BookList->Items->Add(str);
 	}
+	AddBookButton_Click(sender, e);
 }
 private: int getSelectedBook() {
 	int index = this->BookList->SelectedIndex;
@@ -1675,6 +1687,7 @@ private: System::Void DeleteBookButton_Click(System::Object^ sender, System::Eve
 		int selected = getSelectedBook();
 		this->bookRepo->deleteBook(selected);
 		this->RefreshBooksButton_Click(sender, e);
+		RefreshBookLoansButton_Click(sender, e);
 	}
 	catch (NotSelected& e) {
 		MessageBox::Show("Select Book!!");
@@ -1825,6 +1838,7 @@ private: System::Void RefreshClientsButton_Click(System::Object^ sender, System:
 		string clientString = to_string(client.id) + " " + client.lastName + " " + client.firstName + " " + client.middleName;
 		this->ClientList->Items->Add(gcnew String(clientString.c_str()));
 	}
+	AddClientButton_Click(sender, e);
 }	
 private: int getSelectedClient() {
 	int index = this->ClientList->SelectedIndex;
@@ -1937,6 +1951,7 @@ private: System::Void DeleteClientButton_Click(System::Object^ sender, System::E
 		int id = getSelectedClient();
 		cout << id;
 		this->clientRepo->deleteClient(id);
+		RefreshBookLoansButton_Click(sender, e);
 		RefreshClientsButton_Click(sender, e);
 	}
 	catch (NotSelected& e) {
@@ -2012,7 +2027,7 @@ private: System::Void RefreshBookLoansButton_Click(System::Object^ sender, Syste
 		string bookLoanString = to_string(bookLoan.id) + " Читатель №: " + to_string(bookLoan.client.id) + " Книга №: " + to_string(bookLoan.book.id);
 		this->BookLoansListBox->Items->Add(gcnew String(bookLoanString.c_str()));
 	}
-
+	AddBLButton_Click(sender, e);
 }
 
 
@@ -2092,7 +2107,7 @@ private: System::Void CreateBookLoanButton_Click(System::Object^ sender, System:
 private: System::Void BookLoansListBox_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
 	int index = this->BookLoansListBox->SelectedIndex;
 	if (index == -1) {
-		throw NotSelected("book loan");
+		return;
 	}
 	auto a = this->BookLoansListBox->Items[index]->ToString();
 	string selected = msclr::interop::marshal_as<std::string>(a);

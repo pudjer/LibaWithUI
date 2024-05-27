@@ -12,6 +12,7 @@ using namespace Repositories;
 
 [STAThreadAttribute]
 int main() {
+    //Запускаем окно
     Application::SetCompatibleTextRenderingDefault(false);
     Application::EnableVisualStyles();
     MyForm form;

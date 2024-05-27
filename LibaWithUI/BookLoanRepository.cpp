@@ -106,7 +106,7 @@ namespace Repositories {
         sqlite3_finalize(stmt);
 
         // Increment book count
-        BookLoan bookLoan = getBookLoanById(id); // Assuming you have a method to retrieve book loan by id
+        BookLoan bookLoan = getBookLoanById(id); 
         BookRepository bookRepo(db);
         Book book = bookLoan.book;
         book.count++;
@@ -129,19 +129,22 @@ namespace Repositories {
             throw std::runtime_error("Failed to prepare SQL statement.");
         }
 
-        // Execute the SQL statement
         ClientRepository clientRepo(db);
         BookRepository bookRepo(db);
         while ((result = sqlite3_step(stmt)) == SQLITE_ROW) {
-            BookLoan bookLoan;
-            bookLoan.id = sqlite3_column_int(stmt, 0);
-            bookLoan.dateOfIssue = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
-            bookLoan.dateOfReturn = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));
-            bookLoan.book = bookRepo.getBookById(sqlite3_column_int(stmt, 3));
-            bookLoan.client = clientRepo.getClientById(sqlite3_column_int(stmt, 4));
-            bookLoan.canceled = sqlite3_column_int(stmt, 5) != 0;
+            try {
+                //Пришлось игнорировать ошибки, так как sqlite3 не умеет во внешнии ключи
+                BookLoan bookLoan;
+                bookLoan.id = sqlite3_column_int(stmt, 0);
+                bookLoan.dateOfIssue = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1)));
+                bookLoan.dateOfReturn = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2)));
+                bookLoan.book = bookRepo.getBookById(sqlite3_column_int(stmt, 3));
+                bookLoan.client = clientRepo.getClientById(sqlite3_column_int(stmt, 4));
+                bookLoan.canceled = sqlite3_column_int(stmt, 5) != 0;
 
-            allBookLoans.push_back(bookLoan);
+                allBookLoans.push_back(bookLoan);
+            }
+            catch (...) {}
         }
 
         if (result != SQLITE_DONE) {
